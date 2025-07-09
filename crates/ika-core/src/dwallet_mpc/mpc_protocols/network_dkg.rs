@@ -311,6 +311,7 @@ fn network_dkg_secp256k1_session_info(
     SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         epoch: deserialized_event.epoch,
         mpc_round: MPCProtocolInitData::NetworkEncryptionKeyDkg(
             DWalletMPCNetworkKeyScheme::Secp256k1,
@@ -325,6 +326,7 @@ fn network_dkg_ristretto_session_info(
     SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         epoch: deserialized_event.epoch,
         mpc_round: MPCProtocolInitData::NetworkEncryptionKeyDkg(
             DWalletMPCNetworkKeyScheme::Ristretto,

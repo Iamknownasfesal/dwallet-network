@@ -16,6 +16,7 @@ pub(crate) fn start_encrypted_share_verification_session_info(
     SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         epoch: deserialized_event.epoch,
         mpc_round: MPCProtocolInitData::EncryptedShareVerification(deserialized_event),
     }

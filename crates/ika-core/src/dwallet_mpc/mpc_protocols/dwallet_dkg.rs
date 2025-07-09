@@ -47,6 +47,7 @@ pub(crate) fn dwallet_imported_key_verification_request_event_session_info(
     SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         epoch: deserialized_event.epoch,
         mpc_round: MPCProtocolInitData::DWalletImportedKeyVerificationRequest(deserialized_event),
     }
@@ -58,6 +59,7 @@ pub(crate) fn dwallet_dkg_first_party_session_info(
     Ok(SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         epoch: deserialized_event.epoch,
         mpc_round: MPCProtocolInitData::DKGFirst(deserialized_event),
     })
@@ -69,6 +71,7 @@ pub(crate) fn dwallet_dkg_second_party_session_info(
     SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         mpc_round: MPCProtocolInitData::DKGSecond(deserialized_event.clone()),
 
         epoch: deserialized_event.epoch,

@@ -98,6 +98,7 @@ pub(crate) fn network_decryption_key_reconfiguration_session_info_from_event(
     SessionInfo {
         session_type: deserialized_event.session_type.clone(),
         session_identifier: deserialized_event.session_identifier_digest(),
+        session_sequence_number: deserialized_event.session_sequence_number,
         epoch: deserialized_event.epoch,
         mpc_round: MPCProtocolInitData::NetworkEncryptionKeyReconfiguration(deserialized_event),
     }

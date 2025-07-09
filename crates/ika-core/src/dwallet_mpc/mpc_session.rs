@@ -84,6 +84,7 @@ pub struct MPCEventData {
     pub init_protocol_data: MPCProtocolInitData,
     pub(crate) decryption_shares: HashMap<PartyID, <AsyncProtocol as Protocol>::DecryptionKeyShare>,
     pub(crate) session_type: SessionType,
+    pub(crate) session_sequence_number: u64,
     pub(crate) public_input: PublicInput,
 }
 
@@ -348,6 +349,7 @@ impl DWalletMPCSession {
             SessionInfo {
                 session_type: mpc_event_data.session_type.clone(),
                 session_identifier: self.session_identifier,
+                session_sequence_number: mpc_event_data.session_sequence_number,
                 mpc_round: mpc_event_data.init_protocol_data.clone(),
                 epoch: self.epoch_id,
             },
@@ -927,6 +929,7 @@ impl DWalletMPCSession {
             mpc_round: mpc_event_data.init_protocol_data.clone(),
             epoch: self.epoch_id,
             session_identifier: self.session_identifier,
+            session_sequence_number: mpc_event_data.session_sequence_number,
         };
         Ok(ConsensusTransaction::new_dwallet_mpc_message(
             self.epoch_store()?.name,
