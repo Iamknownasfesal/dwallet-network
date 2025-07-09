@@ -178,7 +178,8 @@ where
                 .get_uncompleted_events(
                     dwallet_coordinator_inner
                         .sessions_manager
-                        .user_sessions_keeper.session_events
+                        .user_sessions_keeper
+                        .session_events
                         .id
                         .id
                         .bytes,
@@ -194,7 +195,8 @@ where
                 .get_uncompleted_events(
                     dwallet_coordinator_inner
                         .sessions_manager
-                        .system_sessions_keeper.session_events
+                        .system_sessions_keeper
+                        .session_events
                         .id
                         .id
                         .bytes,
@@ -1081,15 +1083,13 @@ impl SuiClientInner for SuiSdkClient {
             .read_table_vec_as_raw_bytes(key.network_dkg_public_output.contents.id)
             .await?;
 
-
         let mut current_reconfiguration_public_output = vec![];
 
         // Note that if we try to read the reconfiguration public output during the first epoch,
         // where we only had NetworkDKG, `get_current_reconfiguration_public_output()` function will error.
         // In this case, the validator will be stuck in a loop where it can't process events
         // until the epoch is switched, since it will be endlessly waiting for the network key.
-        if key.dkg_at_epoch == epoch
-        {
+        if key.dkg_at_epoch == epoch {
             info!(
                 key_id = ?key.id,
                 ?epoch,

@@ -628,7 +628,8 @@ impl DWalletMPCManager {
 
             let should_advance = match mpc_event_data.session_type {
                 SessionType::User => {
-                    mpc_event_data.session_sequence_number <= self.last_session_to_complete_in_current_epoch
+                    mpc_event_data.session_sequence_number
+                        <= self.last_session_to_complete_in_current_epoch
                 }
                 SessionType::System => true,
             };

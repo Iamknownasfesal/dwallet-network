@@ -11,7 +11,9 @@ use ika_sui_client::{SuiClient, SuiClientInner};
 use ika_types::committee::{Committee, EpochId};
 use ika_types::error::IkaResult;
 use ika_types::messages_consensus::MovePackageDigest;
-use ika_types::messages_dwallet_mpc::{DWalletNetworkEncryptionKeyData, SESSIONS_MANAGER_MODULE_NAME};
+use ika_types::messages_dwallet_mpc::{
+    DWalletNetworkEncryptionKeyData, SESSIONS_MANAGER_MODULE_NAME,
+};
 use shared_crypto::intent::{Intent, IntentMessage};
 use std::collections::HashMap;
 use std::sync::Arc;

@@ -56,7 +56,12 @@ use ika_protocol_config::{ProtocolConfig, ProtocolVersion};
 use ika_types::committee::ClassGroupsEncryptionKeyAndProof;
 use ika_types::digests::MessageDigest;
 use ika_types::dwallet_mpc_error::{DwalletMPCError, DwalletMPCResult};
-use ika_types::message::{DKGFirstRoundOutput, DKGSecondRoundOutput, DWalletImportedKeyVerificationOutput, DWalletMessageKind, EncryptedUserShareOutput, MakeDWalletUserSecretKeySharesPublicOutput, MPCNetworkDKGOutput, PartialSignatureVerificationOutput, PresignOutput, SignOutput, MPCNetworkReconfigurationOutput};
+use ika_types::message::{
+    DKGFirstRoundOutput, DKGSecondRoundOutput, DWalletImportedKeyVerificationOutput,
+    DWalletMessageKind, EncryptedUserShareOutput, MPCNetworkDKGOutput,
+    MPCNetworkReconfigurationOutput, MakeDWalletUserSecretKeySharesPublicOutput,
+    PartialSignatureVerificationOutput, PresignOutput, SignOutput,
+};
 use ika_types::messages_consensus::Round;
 use ika_types::messages_consensus::{
     AuthorityCapabilitiesV1, ConsensusTransaction, ConsensusTransactionKey,
@@ -1740,18 +1745,20 @@ impl AuthorityPerEpochStore {
                         } else {
                             Self::slice_public_output_into_messages(
                                 output,
-                                |public_output_chunk, is_last| {
-                                    MPCNetworkDKGOutput {
-                                        dwallet_network_decryption_key_id: init_event.event_data.dwallet_network_decryption_key_id
-                                            .clone()
-                                            .to_vec(),
-                                        public_output: public_output_chunk,
-                                        supported_curves: vec![DWalletMPCNetworkKeyScheme::Secp256k1 as u32],
-                                        is_last,
-                                        rejected: false,
-                                        session_sequence_number: init_event.session_sequence_number,
-                                    }
-                                }
+                                |public_output_chunk, is_last| MPCNetworkDKGOutput {
+                                    dwallet_network_decryption_key_id: init_event
+                                        .event_data
+                                        .dwallet_network_decryption_key_id
+                                        .clone()
+                                        .to_vec(),
+                                    public_output: public_output_chunk,
+                                    supported_curves: vec![
+                                        DWalletMPCNetworkKeyScheme::Secp256k1 as u32,
+                                    ],
+                                    is_last,
+                                    rejected: false,
+                                    session_sequence_number: init_event.session_sequence_number,
+                                },
                             )
                         };
 
@@ -1783,18 +1790,18 @@ impl AuthorityPerEpochStore {
                 } else {
                     Self::slice_public_output_into_messages(
                         output,
-                        |public_output_chunk, is_last| {
-                            MPCNetworkReconfigurationOutput {
-                                dwallet_network_decryption_key_id: init_event.event_data.dwallet_network_decryption_key_id
-                                    .clone()
-                                    .to_vec(),
-                                public_output: public_output_chunk,
-                                supported_curves: vec![DWalletMPCNetworkKeyScheme::Secp256k1 as u32],
-                                is_last,
-                                rejected: false,
-                                session_sequence_number: init_event.session_sequence_number,
-                            }
-                        }
+                        |public_output_chunk, is_last| MPCNetworkReconfigurationOutput {
+                            dwallet_network_decryption_key_id: init_event
+                                .event_data
+                                .dwallet_network_decryption_key_id
+                                .clone()
+                                .to_vec(),
+                            public_output: public_output_chunk,
+                            supported_curves: vec![DWalletMPCNetworkKeyScheme::Secp256k1 as u32],
+                            is_last,
+                            rejected: false,
+                            session_sequence_number: init_event.session_sequence_number,
+                        },
                     )
                 };
 
@@ -1862,12 +1869,7 @@ impl AuthorityPerEpochStore {
         for i in 0..public_chunks.len() {
             // If the chunk is missing, use an empty slice, as the size of the slices can be different.
             let public_chunk = public_chunks.get(i).unwrap_or(&empty);
-            slices.push(
-                func(
-                    public_chunk.to_vec(),
-                    i == public_chunks.len() - 1,
-                )
-            );
+            slices.push(func(public_chunk.to_vec(), i == public_chunks.len() - 1));
         }
         slices
     }

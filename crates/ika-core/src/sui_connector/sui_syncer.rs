@@ -266,16 +266,21 @@ where
             let coordinator_inner = sui_client.must_get_dwallet_coordinator_inner().await;
             let DWalletCoordinatorInner::V1(coordinator) = coordinator_inner;
             // Check if we can advance the epoch.
-            let all_epoch_sessions_finished =
-                coordinator.sessions_manager.user_sessions_keeper.completed_sessions_count
-                    == coordinator
-                        .sessions_manager
-                        .last_user_initiated_session_to_complete_in_current_epoch;
-            let all_immediate_sessions_completed =
-                coordinator.sessions_manager.system_sessions_keeper.started_sessions_count
-                    == coordinator
-                        .sessions_manager
-                        .system_sessions_keeper.completed_sessions_count;
+            let all_epoch_sessions_finished = coordinator
+                .sessions_manager
+                .user_sessions_keeper
+                .completed_sessions_count
+                == coordinator
+                    .sessions_manager
+                    .last_user_initiated_session_to_complete_in_current_epoch;
+            let all_immediate_sessions_completed = coordinator
+                .sessions_manager
+                .system_sessions_keeper
+                .started_sessions_count
+                == coordinator
+                    .sessions_manager
+                    .system_sessions_keeper
+                    .completed_sessions_count;
             let next_epoch_committee_exists =
                 system_inner_v1.validator_set.next_epoch_committee.is_some();
             let all_network_encryption_keys_reconfiguration_completed =
